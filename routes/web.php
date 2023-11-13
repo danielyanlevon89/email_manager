@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\ProviderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,10 @@ Route::middleware('splade')->group(function () {
     Route::get('/', function () {
         return view('welcome');
     });
+
+    Route::get('/auth/{provider}/redirect', [ProviderController::class, 'redirect']);
+
+    Route::get('/auth/{provider}/callback',[ProviderController::class, 'callback'] );
 
     Route::get('/test', function () {
         return view('test');

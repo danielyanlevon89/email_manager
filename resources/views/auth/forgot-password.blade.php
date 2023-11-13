@@ -8,10 +8,13 @@
         <x-auth-session-status class="mb-4" />
 
         <x-splade-form action="{{ route('password.email') }}" class="space-y-4">
-            <x-splade-input id="email" class="block mt-1 w-full" type="email" name="email" :label="__('Email')" required autofocus />
-
+            <x-splade-input id="input_type" class="block mt-1 w-full" type="text" name="input_type" :label="__('Email/Username')" required autofocus />
+            <x-splade-errors>
+                <p class="text-red-600 text-sm mt-2 font-sans" v-if="errors.has('username')" v-text="errors.first('username')" />
+                <p class="text-red-600 text-sm mt-2 font-sans" v-if="errors.has('email')" v-text="errors.first('email')" />
+            </x-splade-errors>
             <div class="flex items-center justify-end">
-                <x-splade-submit :label="__('Email Password Reset Link')" />
+                <x-splade-submit :label="__('Password Reset Link')" />
             </div>
         </x-splade-form>
     </x-auth-card>

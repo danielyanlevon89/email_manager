@@ -11,6 +11,8 @@ use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
+
+    protected $inputType;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -29,7 +31,8 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required_without:username', 'string', 'email','exists:users,email'],
+            'username' => ['required_without:email', 'string', 'exists:users,username'],
             'password' => ['required', 'string'],
         ];
     }
@@ -45,11 +48,11 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (! Auth::attempt($this->only($this->inputType, 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'input_type' => trans('auth.failed'),
             ]);
         }
 
@@ -74,7 +77,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
+            $this->inputType => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -88,6 +91,14 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey()
     {
-        return Str::transliterate(Str::lower($this->input('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->input($this->inputType)).'|'.$this->ip());
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->inputType = filter_var($this->input('input_type'),FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        $this->merge([$this->inputType => $this->input('input_type')]);
+
     }
 }
