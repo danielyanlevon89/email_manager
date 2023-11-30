@@ -17,3 +17,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/docker/nginx-logs/access.log
+/docker/nginx-logs/error.log
+/public/test.php
