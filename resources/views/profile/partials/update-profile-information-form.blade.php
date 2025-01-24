@@ -10,7 +10,8 @@
     </header>
 
     <x-splade-form method="patch" :action="route('profile.update')" :default="$user" class="mt-6 space-y-6" preserve-scroll>
-        <x-splade-input id="name" name="name" type="text" :label="__('Name')" required autofocus autocomplete="name" />
+        <x-splade-input id="first_name" name="first_name" type="text" :label="__('First Name')" required autofocus autocomplete="first_name" />
+        <x-splade-input id="last_name" name="last_name" type="text" :label="__('Last Name')" required autofocus autocomplete="last_name" />
         <x-splade-input id="username" name="username" type="text" :label="__('Username')" required autofocus autocomplete="username" />
         <x-splade-input id="email" name="email" type="email" :label="__('Email')" required autocomplete="email" />
 

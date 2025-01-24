@@ -34,11 +34,13 @@ class ProviderController extends Controller
                 'provider_id' => $socialUser->id,
                 'provider' => $provider,
             ], [
-                'name' => $socialUser->name??$socialUser->email,
+                'first_name' => $socialUser->name??$socialUser->email,
+                'last_name' => $socialUser->name??$socialUser->email,
                 'username' => $socialUser->nickname??$socialUser->email,
                 'email' => $socialUser->email,
                 'provider_token' => $socialUser->token
             ]);
+
             $password = Str::random(12);
 
 

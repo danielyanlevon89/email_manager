@@ -13,6 +13,15 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+
+        $schedule->command('app:scan-server')
+            ->onOneServer()
+            ->withoutOverlapping()
+            ->everyMinute();
+
+        $schedule->command('telescope:prune --hours=48')->daily();
+
+
     }
 
     /**

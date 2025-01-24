@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
+    libmcrypt-dev \
     zip \
     nano \
     telnet \
@@ -71,7 +72,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Create system user to run Composer and Artisan Commands
 RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
+    chown -R $user:$user /home/$user && \
+    usermod -G www-data $user  && \
+    chown -R $user:www-data /var/www
 
 RUN composer self-update
 
@@ -80,6 +83,6 @@ WORKDIR /var/www
 
 COPY . .
 # INSTALL YOUR DEPENDENCIES
-RUN composer install  --ignore-platform-req=ext-zip
+#RUN composer install  --ignore-platform-req=ext-zip
 
 USER $user

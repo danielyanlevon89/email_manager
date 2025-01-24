@@ -6,6 +6,8 @@
                 'hover:bg-gray-100': table.striped,
                 'hover:bg-gray-50': !table.striped
             }"
+            class="@php echo ($item->new_message) ? 'bg-yellow-50 text-gray-900 font-bold' : '' @endphp"
+
         >
             @if($hasBulkActions = $table->hasBulkActions())
                 <td width="64" class="text-xs px-6 py-4">
@@ -36,6 +38,7 @@
                             {{ ${'spladeTableCell' . $column->keyHash()}($item, $itemKey) }}
                         @else
                             {!! nl2br(e($getColumnDataFromItem($item, $column))) !!}
+                            @php echo ($item->replied_message != '' && $column->key == 'from') ? '<br>'.__('Replied') : '' @endphp
                         @endisset
                     </div>
                 </td>
