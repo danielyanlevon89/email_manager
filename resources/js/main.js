@@ -7,13 +7,3 @@ window.quitIntervals = function(limit){
     }
 }
 
-
-window.setTemplateContent = function(value) {
-
-    // console.log(value)
-    document.getElementsByClassName('jodit-wysiwyg')[0].innerHTML = '<p>hhhhhhhhhhhhh</p>'
-    document.getElementById('auto_reply').innerHTML = 'hhhhhhhhhhhhh'
-    // console.log(document.getElementById("emailAccountForm").auto_reply.value)
-    // document.getElementById("emailAccountForm").auto_reply.innerHTML = 'dsdfsdfsdfsdfsd';
-    // console.log(document.getElementById("emailAccountForm").auto_reply.value)
-}

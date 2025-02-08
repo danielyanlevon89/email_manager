@@ -23,7 +23,7 @@ class AddGlobalVariablesAfterAuth
     public function handle(Request $request, Closure $next)
     {
 
-        $emailAccounts = EmailAccount::imapActive()->get();
+        $emailAccounts = EmailAccount::imapActive()->where('user_id',Auth::id())->get();
         view()->share('emailAccounts', $emailAccounts);
 
         (new IncomingEmailsController)->getIncomingEmailsCount();

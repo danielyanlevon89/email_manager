@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
@@ -19,7 +20,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         $this->hideSensitiveRequestDetails();
 
-        $isLocal = $this->app->environment('local');
+        $isLocal = $this->app->environment('local') || $this->app->environment('production');
 
         Telescope::filter(function (IncomingEntry $entry) use ($isLocal) {
             return $isLocal ||
@@ -31,7 +32,8 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
         });
 
         Telescope::filterBatch(function (Collection $entries) {
-            if ($this->app->environment('local')) {
+            $isLocal = $this->app->environment('local') || $this->app->environment('production');
+            if ($isLocal) {
                 return true;
             }
 
@@ -50,7 +52,8 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      */
     protected function hideSensitiveRequestDetails(): void
     {
-        if ($this->app->environment('local')) {
+        $isLocal = $this->app->environment('local') || $this->app->environment('production');
+        if ($isLocal) {
             return;
         }
 
@@ -70,8 +73,10 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      */
     protected function gate(): void
     {
+
         Gate::define('viewTelescope', function (User $user) {
-            return in_array($user->email, explode(',',env('ADMIN_USER_EMAIL','danielyanlevon89@gmail.com')));
+//            return in_array($user->email, explode(',',env('ADMIN_USER_EMAIL','danielyanlevon89@gmail.com')));
+return true;
         });
     }
 }

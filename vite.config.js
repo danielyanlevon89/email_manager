@@ -1,13 +1,10 @@
-import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
-import vue from '@vitejs/plugin-vue';
+import { defineConfig } from "vite";
+import laravel from "laravel-vite-plugin";
+import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
     plugins: [
-        laravel({
-            input: 'resources/js/app.js',
-            ssr: 'resources/js/ssr.js',
-        }),
+        laravel(['resources/js/app.js']),
         vue({
             template: {
                 transformAssetUrls: {
@@ -16,18 +13,9 @@ export default defineConfig({
                 },
             },
         }),
+       
     ],
-    ssr: {
-        noExternal: ["vue", "@protonemedia/laravel-splade"]
-    },
-    resolve: {
-        alias: {
-            '@': '/resources/js',
-        },
-    },
-    server: {
-        host: '0.0.0.0',
-        open: false
+    build: {
+        chunkSizeWarningLimit: 1600
     }
 });
-

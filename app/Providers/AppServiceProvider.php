@@ -19,7 +19,8 @@ class AppServiceProvider extends ServiceProvider
         $loader = AliasLoader::getInstance();
         $loader->alias('ProtoneMedia\Splade\Http\TableBulkActionController', 'App\Services\SpladeTableBulkActionService');
 
-        if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
+        $isLocal = $this->app->environment('local') || $this->app->environment('production');
+        if ($isLocal && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }

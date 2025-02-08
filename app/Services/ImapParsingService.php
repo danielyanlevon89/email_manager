@@ -45,35 +45,30 @@ class ImapParsingService
         {
             $client->connect();
 
-            if(!$client->isConnected())
+            if($client->isConnected())
             {
-             Log::error(message:"cannot connect to $account->imap_host IMAP server");
-             die;
+
+                foreach($this->folders as $folder)
+                {
+
+                    if($folder == 'INBOX')
+                    {
+                        $this->addIncomingEmails($account,$client);
+                    } elseif ($folder == 'Sent') {
+                        $this->addOutgoingEmails($account,$client);
+                    }
+
+                }
+
+                $account->imap_last_execute_items_count = $this->incomingItemsCount + $this->outgoingItemsCount;
+                $account->imap_last_execute_time = Carbon::now();
+                $account->save();
             }
         }
         catch (\Exception $e)
         {
             Log::error(message:"cannot connect to $account->imap_host IMAP server");
-            $result['message'] =$e->getMessage();
-            exit(json_encode($result));
         }
-
-            foreach($this->folders as $folder)
-            {
-
-                if($folder == 'INBOX')
-                {
-                    $this->addIncomingEmails($account,$client);
-                } elseif ($folder == 'Sent') {
-                    $this->addOutgoingEmails($account,$client);
-                }
-
-            }
-
-        $account->imap_last_execute_items_count = $this->incomingItemsCount + $this->outgoingItemsCount;
-        $account->imap_last_execute_time = Carbon::now();
-        $account->save();
-
     }
 
     private function addIncomingEmails(EmailAccount $account, $client)

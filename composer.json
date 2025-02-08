@@ -14,7 +14,7 @@
     "laravel/horizon": "^5.30",
     "laravel/sanctum": "4.0",
     "laravel/socialite": "^5.10",
-    "laravel/telescope": "^5.3",
+    "laravel/telescope": "^5.4",
     "laravel/tinker": "^2.8",
     "maatwebsite/excel": "^3.1",
     "predis/predis": "^2.3",
@@ -64,7 +64,7 @@
   "extra": {
     "laravel": {
       "dont-discover": [
-          "laravel/telescope"
+
       ]
     }
   },
