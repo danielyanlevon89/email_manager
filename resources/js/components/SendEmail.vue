@@ -45,7 +45,11 @@ export default {
         }
     },
     props: {
-        sendTo: {
+        replyTo: {
+            type: String,
+            require: true,
+        },
+        replyToMessageId: {
             type: String,
             require: true,
         },
@@ -77,8 +81,8 @@ export default {
         } else {
             this.showModal = false;
         }
-        if (this.sendTo != '' && this.openModal) {
-            this.formData.EmailTo = this.sendTo[0];
+        if (this.replyTo != '' && this.openModal) {
+            this.formData.EmailTo = this.replyTo[0];
         }
         if(typeof this.templates != 'undefined') {
             this.templates.Clear = ''
@@ -212,8 +216,11 @@ export default {
         },
         openReplyMessageModal() {
             this.formData.Files = '';
-            if (this.sendTo != '') {
-                this.formData.EmailTo = this.sendTo[0];
+            if (this.replyTo != '') {
+                this.formData.EmailTo = this.replyTo[0];
+            }
+            if (this.replyToMessageId != '') {
+                this.formData.EmailTo = this.replyToMessageId[0];
             }
             if (this.emailData.cc != '') {
                 this.formData.EmailCc = this.emailData.cc;

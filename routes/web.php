@@ -55,16 +55,18 @@ Route::middleware('splade')->group(function () {
         Route::get('check_smtp_connection/{id}', [EmailAccountService::class, 'checkSmtpConnection']);
         Route::get('check_imap_connection/{id}', [EmailAccountService::class, 'checkImapConnection']);
         Route::get('set_email_account/{id}', [EmailAccountService::class, 'setEmailAccount'])->name('setEmailAccount');
+        Route::get('unset_email_account', [EmailAccountService::class, 'unsetEmailAccount'])->name('unsetEmailAccount');
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    });
-
-    Route::middleware(['auth','verified','has_chosen_email_account','add_global_variables_after_auth'])->group(function () {
         Route::get('/dashboard', function () {
             return view('dashboard');
         })->middleware(['verified'])->name('dashboard');
+    });
+
+    Route::middleware(['auth','verified','has_chosen_email_account','add_global_variables_after_auth'])->group(function () {
+
 
         Route::get('incoming_emails', [IncomingEmailsController::class, 'index'])->name('incoming_emails.index');
         Route::get('incoming_email_details/show/{email}', [EmailDetailsController::class, 'incomingEmailDetails'])->name('incoming_email_details.show');

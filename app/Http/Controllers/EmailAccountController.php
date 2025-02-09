@@ -6,6 +6,7 @@ use App\Enums\Encryption;
 use App\Http\Requests\EmailAccountRequest;
 use App\Models\EmailAccount;
 use App\Models\EmailTemplate;
+use App\Models\IncomingEmail;
 use App\Tables\EmailAccounts;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -74,16 +75,6 @@ class EmailAccountController extends Controller
             abort(404);
         }
 
-        if (
-                session()->exists('chosen_email_account') &&
-                session()->get('chosen_email_account','') == $emailAccount->id &&
-                $request->validated()['is_active'] == false
-            )
-        {
-           Toast::info(__('Please Choose Account'))->autoDismiss(2);
-           session()->remove('chosen_email_account');
-        }
-
         $emailAccount->update($request->validated());
 
         Toast::title(__('Account Updated Successfully'))->autoDismiss(2);
@@ -101,12 +92,6 @@ class EmailAccountController extends Controller
             abort(404);
         }
 
-        if(session()->get('chosen_email_account','') == $emailAccount->id)
-        {
-            Toast::danger(__('Can\'t Delete Active Account'))->autoDismiss(2);
-            return back();
-        }
-
         $emailAccount->delete();
 
         Toast::title(__('Account Deleted Successfully'))->autoDismiss(2);
@@ -115,5 +100,30 @@ class EmailAccountController extends Controller
     }
 
 
+    public function setActive(EmailAccount $emailAccount)
+    {
+            $emailAccount->is_active = true;
+            $emailAccount->save();
+
+    }
+    public function setNoActive(EmailAccount $emailAccount)
+    {
+        $emailAccount->is_active = false;
+        $emailAccount->save();
+
+    }
+
+    public function enableAutoReply(EmailAccount $emailAccount)
+    {
+        $emailAccount->auto_reply_is_active = true;
+        $emailAccount->save();
+
+    }
+    public function disableAutoReply(EmailAccount $emailAccount)
+    {
+        $emailAccount->auto_reply_is_active = false;
+        $emailAccount->save();
+
+    }
 
 }

@@ -16,9 +16,18 @@ class IncomingEmailsController extends Controller
 
     public function getIncomingEmailsCount()
     {
-        $incomingEmailsCount = IncomingEmail::where('user_id',Auth::id())
-            ->where('email_accounts_id',session()->get('chosen_email_account','0'))
-            ->count();
+        $query = IncomingEmail::where('user_id',Auth::id())
+            ->where('email_accounts_id',session()->get('chosen_email_account','0'));
+        $allIncomingEmailsCount = $query->count();
+        $newIncomingEmailsCount = $query->whereNull('seen_at')->count();
+
+        $incomingEmailsCount = $allIncomingEmailsCount;
+        if($newIncomingEmailsCount)
+        {
+            $incomingEmailsCount = $newIncomingEmailsCount.'/'.$allIncomingEmailsCount;
+        }
+
+
         view()->share('incomingEmailsCount', $incomingEmailsCount);
     }
 

@@ -148,6 +148,7 @@ class ImapParsingService
 
                              $emailData = [
                                  'mail_to' => $item,
+                                 'reply_message_id' => $this->incomingEmails['reply_message_id'] ?? null,
                                  'subject' => $this->incomingEmails['subject'],
                                  'body' => $account->auto_reply .
                                      '<br><br><br><blockquote style="border-left:1px solid #0857A6; margin:10px; padding:0 0 0 10px;">'

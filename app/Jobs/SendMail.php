@@ -26,6 +26,10 @@ class SendMail implements ShouldQueue
         $this->data['mail_to'] = explode(",", $this->data['mail_to']);
         $this->data['mail_cc'] = isset($this->data['mail_cc']) ? explode(",", $this->data['mail_cc']) : '';
 
+        if(!isset($data['reply_message_id']))
+        {
+            unset($this->data['reply_message_id']);
+        }
         if(!isset($data['mail_cc']))
         {
             unset($this->data['mail_cc']);
@@ -66,6 +70,7 @@ class SendMail implements ShouldQueue
                     ],
                     'to' => $this->data['mail_to'],
                     'cc' => $this->data['mail_cc'] ??'',
+                    'replyTo' => $this->data['reply_message_id'] ?? '',
                     'subject' => $this->data['subject'],
                     'content' => $this->data['body'],
                     'attachments_path' => $this->data['attachments_path'] ?? '',

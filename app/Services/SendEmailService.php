@@ -36,6 +36,7 @@ class SendEmailService
             $dispatchData = [
                 'mail_to' => $item,
                 'mail_cc' => $request->mail_cc ?? null,
+                'reply_message_id' => $request->reply_message_id ?? null,
                 'subject' => $request->subject,
                 'body' => $request->body,
                 'attachments_path' => $request->attachment ? $attachments_path : null,

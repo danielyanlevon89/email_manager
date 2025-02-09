@@ -89,10 +89,23 @@ class EmailAccountService
 
     public function  setEmailAccount($id)
     {
+        $emailAddress = EmailAccount::findOrFail($id)->email_address;
 
         session(['chosen_email_account' => $id]);
+        session(['chosen_email_account_address' => $emailAddress]);
+
 
         Toast::success(__('Account Has Successfully Chosen'))->autoDismiss(2);
+
+        return to_route('dashboard');
+    }
+    public function  unsetEmailAccount()
+    {
+
+        session()->remove('chosen_email_account');
+        session()->remove('chosen_email_account_address');
+
+        Toast::info(__('Please Choose Account'))->autoDismiss(2);
 
         return to_route('dashboard');
     }

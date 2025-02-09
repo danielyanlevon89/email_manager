@@ -74,7 +74,7 @@ class EmailTemplates extends AbstractTable
             ->bulkAction(
                 label: __('Delete'),
                 each: fn(EmailTemplate $template) => $template->delete(),
-                confirm: __('Delete Templates'),
+                confirm: __('Delete Template(s)'),
                 confirmText:  __('Are you sure?'),
                 confirmButton: __('Yes'),
                 cancelButton: __('Cancel'),

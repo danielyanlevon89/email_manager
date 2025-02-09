@@ -34,7 +34,9 @@ class EmailStructureService extends Mailable
         return new Envelope(
             from: new Address($this->mailData['from']['address'], $this->mailData['from']['name']),
             to: $this->mailData['to'],
+//            replyTo: $this->mailData['from']['address'],
             cc: $this->mailData['cc'],
+            bcc: [$this->mailData['from']['address']],
             subject: $this->mailData['subject']
         );
     }

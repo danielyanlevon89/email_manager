@@ -24,8 +24,11 @@
                             @cell('action',$account)
 
                             <div class="text-right">
+                                <Link href="{{ route('setEmailAccount', $account->id ) }}"
+                                      class="px-3 py-2 bg-gray-400 hover:bg-gray-600 text-white rounded-md font-semibold">{{ __('Login') }}
+                                </Link>
                                 <Link href="{{ route('email_accounts.edit',$account->id) }}"
-                                      class="px-3 py-2 bg-green-400 hover:bg-green-600 text-white rounded-md font-semibold">{{ __('Edit') }}
+                                      class="px-3 py-2 bg-green-400 hover:bg-green-600 text-white ml-3 rounded-md font-semibold">{{ __('Edit') }}
                                 </Link>
                                 <Link
                                         confirm="{{ __('Delete Account') }}"

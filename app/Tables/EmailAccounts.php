@@ -4,7 +4,11 @@ namespace App\Tables;
 
 use App\Enums\Boolean;
 use App\Enums\Encryption;
+use App\Http\Controllers\EmailAccountController;
+use App\Http\Controllers\IncomingEmailsController;
 use App\Models\EmailAccount;
+use App\Models\EmailTemplate;
+use App\Models\IncomingEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -78,6 +82,7 @@ class EmailAccounts extends AbstractTable
                 'imap_scan_days_count',
                 'imap_result_limit',
                 'is_active',
+                'auto_reply_is_active',
                 'imap_result_limit',
                 'imap_last_execute_time',
                 'imap_last_execute_items_count',
@@ -95,6 +100,7 @@ class EmailAccounts extends AbstractTable
             ])
             ->allowedFilters([
                 AllowedFilter::exact('is_active'),
+                AllowedFilter::exact('auto_reply_is_active'),
                 AllowedFilter::exact('imap_encryption'),
                 AllowedFilter::exact('smtp_encryption'),
                 $globalSearch
@@ -120,6 +126,7 @@ class EmailAccounts extends AbstractTable
             ->column('email_address', sortable: true )
             ->column('email_from', sortable: true)
             ->column('is_active', sortable: true,  as: fn ($is_active) => ($is_active) ? Boolean::true : Boolean::false)
+            ->column('auto_reply_is_active', sortable: true,  as: fn ($reply_is_active) => ($reply_is_active) ? Boolean::true : Boolean::false)
 
             ->column('imap_host', sortable: true, hidden: true)
             ->column('imap_port', sortable: true, hidden: true)
@@ -141,10 +148,38 @@ class EmailAccounts extends AbstractTable
             ->column('smtp_send_email_count_in_minute', sortable: true, hidden: true)
 
             ->column('action', exportAs: false,alignment: 'right')
-            ->selectFilter('imap_encryption',Encryption::toArray())
             ->selectFilter('is_active',options: Boolean::toArray())
-            ->selectFilter('smtp_encryption',Encryption::toArray())
+            ->selectFilter('auto_reply_is_active',options: Boolean::toArray())
             ->export()
+            ->bulkAction(
+                label: __('Enable'),
+                each: fn(EmailAccount $account) => (new EmailAccountController())->setActive($account),
+                after: fn() =>  Toast::title(__('Email Account(s) Enabled'))->autoDismiss(2)
+            )
+            ->bulkAction(
+                label: __('Disable'),
+                each: fn(EmailAccount $account) => (new EmailAccountController())->setNoActive($account),
+                after: fn() =>  Toast::title(__('Email Account(s) Disabled'))->autoDismiss(2)
+            )
+            ->bulkAction(
+                label: __('Enable Auto Reply'),
+                each: fn(EmailAccount $account) => (new EmailAccountController())->enableAutoReply($account),
+                after: fn() =>  Toast::title(__('Email Account(s) Auto Reply Enabled'))->autoDismiss(2)
+            )
+            ->bulkAction(
+                label: __('Disable Auto Reply'),
+                each: fn(EmailAccount $account) => (new EmailAccountController())->disableAutoReply($account),
+                after: fn() =>  Toast::title(__('Email Account(s) Auto Reply Disabled'))->autoDismiss(2)
+            )
+            ->bulkAction(
+                label: __('Delete'),
+                each: fn(EmailAccount $account) => $account->delete(),
+                confirm: __('Delete Account(s)'),
+                confirmText:  __('Are you sure?'),
+                confirmButton: __('Yes'),
+                cancelButton: __('Cancel'),
+                after: fn() =>  Toast::title(__('Account(s) Deleted Successfully'))->autoDismiss(2)
+            )
             ->paginate(10);
 
     }

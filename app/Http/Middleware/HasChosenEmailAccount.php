@@ -24,7 +24,7 @@ class HasChosenEmailAccount
         if (! session()->exists('chosen_email_account'))
         {
            Toast::info(__('Please Choose Account'))->autoDismiss(2);
-           return redirect('email_accounts');
+
         }
 
         return $next($request);

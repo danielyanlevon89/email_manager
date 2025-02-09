@@ -4,8 +4,9 @@
     <div class="flex">
 
             <sidebar
-                :choosenEmailAccount='{!! session()->exists('chosen_email_account') ?? false !!}'
-                :incomingEmailsCount='@js($incomingEmailsCount??'')'
+                :choosenEmailAccountAddress="@js(session()->get('chosen_email_account_address',''))"
+                :choosenEmailAccountId="@js(session()->get('chosen_email_account',''))"
+                :incomingEmailsCount="@js($incomingEmailsCount??'')"
                 :outgoingEmailsCount='@js($outgoingEmailsCount??'')'
                 :canSeeExtraUrls='@js(
                     (
@@ -39,7 +40,8 @@
         :accountId="@js(session()->get('chosen_email_account',''))"
         :templates="@js($templates)"
         :email-data="@js($emailData??[])"
-        :send-to='{!! isset($emailToReply) ? collect([$emailToReply])->toJson() : '' !!}'
+        :reply-to="@js( isset($emailToReply) ? collect([$emailToReply])->toJson() : '' )"
+        :reply-to-message-d="@js( isset($emailToReplyMessageId) ? collect([$emailToReplyMessageId])->toJson() : '' )"
         :openModal="@js($openModal??'')"
         :canBeReplied="@js($canBeReplied??'')"
      />
