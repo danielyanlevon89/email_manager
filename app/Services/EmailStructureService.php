@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Headers;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -34,12 +35,31 @@ class EmailStructureService extends Mailable
         return new Envelope(
             from: new Address($this->mailData['from']['address'], $this->mailData['from']['name']),
             to: $this->mailData['to'],
-//            replyTo: $this->mailData['from']['address'],
             cc: $this->mailData['cc'],
-            bcc: [$this->mailData['from']['address']],
             subject: $this->mailData['subject']
         );
     }
+
+    /**
+     * Get the message headers.
+     */
+    public function headers(): Headers
+    {
+        if($this->mailData['message_id'])
+        {
+            return new Headers(
+                text: [
+                    'In-Reply-To' => $this->mailData['message_id'],
+                    'References' => $this->mailData['message_id'],
+                ],
+            );
+        } else
+        {
+            return new Headers();
+        }
+
+    }
+
 
     /**
      * Get the message content definition.

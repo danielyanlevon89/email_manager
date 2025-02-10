@@ -3,6 +3,7 @@ namespace App\Jobs;
 
 use App\Models\EmailAccount;
 use App\Services\EmailStructureService;
+use App\Services\SendEmailService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -26,9 +27,9 @@ class SendMail implements ShouldQueue
         $this->data['mail_to'] = explode(",", $this->data['mail_to']);
         $this->data['mail_cc'] = isset($this->data['mail_cc']) ? explode(",", $this->data['mail_cc']) : '';
 
-        if(!isset($data['reply_message_id']))
+        if(!isset($data['message_id']))
         {
-            unset($this->data['reply_message_id']);
+            unset($this->data['message_id']);
         }
         if(!isset($data['mail_cc']))
         {
@@ -63,20 +64,24 @@ class SendMail implements ShouldQueue
 
         try {
 
-            $mail->send(new EmailStructureService([
-                    'from' => [
-                        'address' => $account->email_address ?? env('MAIL_FROM_ADDRESS'),
-                        'name' => $account->email_from ?? env('MAIL_FROM_NAME')
-                    ],
-                    'to' => $this->data['mail_to'],
-                    'cc' => $this->data['mail_cc'] ??'',
-                    'replyTo' => $this->data['reply_message_id'] ?? '',
-                    'subject' => $this->data['subject'],
-                    'content' => $this->data['body'],
-                    'attachments_path' => $this->data['attachments_path'] ?? '',
-                ]));
+            $emailData = [
+                'from' => [
+                    'address' => $account->email_address ?? env('MAIL_FROM_ADDRESS'),
+                    'name' => $account->email_from ?? env('MAIL_FROM_NAME')
+                ],
+                'to' => $this->data['mail_to'],
+                'cc' => $this->data['mail_cc'] ??'',
+                'message_id' => $this->data['message_id'] ?? '',
+                'subject' => $this->data['subject'],
+                'content' => $this->data['body'],
+                'attachments_path' => $this->data['attachments_path'] ?? '',
+            ];
 
-            Log::info("Email sent from account: {$account->email_address}",$this->data['mail_to']);
+            $mail->send(new EmailStructureService($emailData));
+
+            (new SendEmailService)->addSentEmail($account,$emailData);
+
+            Log::info("Email sent from account: {$account->email_address}",$this->data);
         } catch (\Exception $e) {
             Log::error("Failed to send email from account: {$account->email_address} message: ".$e->getLine() .$e->getFile(). $e->getMessage());
         }

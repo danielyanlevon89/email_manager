@@ -90,7 +90,7 @@ class OutgoingEmails extends AbstractTable
         return QueryBuilder::for(OutgoingEmail::where('user_id',Auth::id())
             ->where('email_accounts_id',session()->get('chosen_email_account','0'))
             ->select('*',
-            DB::raw("(CASE WHEN reply_message_id is not null THEN true ELSE false END) as replied_message")
+            DB::raw("(CASE WHEN reply_message_id != '' THEN true ELSE false END) as replied_message")
         ))
             ->defaultSort('-id')
             ->allowedSorts(['id','message_id','reply_message_id','from','to','subject','cc','email_date','has_attachment'])

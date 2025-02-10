@@ -37,6 +37,7 @@ export default {
             formData: {
                 EmailCc: '',
                 EmailTo: '',
+                EmailMessageId: '',
                 Content: '',
                 Subject: '',
                 Files: '',
@@ -46,10 +47,6 @@ export default {
     },
     props: {
         replyTo: {
-            type: String,
-            require: true,
-        },
-        replyToMessageId: {
             type: String,
             require: true,
         },
@@ -82,7 +79,7 @@ export default {
             this.showModal = false;
         }
         if (this.replyTo != '' && this.openModal) {
-            this.formData.EmailTo = this.replyTo[0];
+            this.formData.EmailTo = this.replyTo;
         }
         if(typeof this.templates != 'undefined') {
             this.templates.Clear = ''
@@ -165,6 +162,7 @@ export default {
 
             this.bodyFormData.append('mail_to', this.formData.EmailTo);
             this.bodyFormData.append('mail_cc', this.formData.EmailCc);
+            this.bodyFormData.append('message_id', this.formData.EmailMessageId);
             this.bodyFormData.append('subject', this.formData.Subject);
             this.bodyFormData.append('body', this.formData.Content);
              for (var x = 0; x < this.formData.Files.length; x++) {
@@ -209,18 +207,18 @@ export default {
             this.formData = {
                     EmailCc: '',
                     EmailTo: '',
+                    EmailMessageId: '',
                     Content: '',
                     Subject: '',
                     Files: '',
             }
         },
         openReplyMessageModal() {
+
             this.formData.Files = '';
+            this.formData.EmailMessageId = this.emailData.message_id ?? '';
             if (this.replyTo != '') {
-                this.formData.EmailTo = this.replyTo[0];
-            }
-            if (this.replyToMessageId != '') {
-                this.formData.EmailTo = this.replyToMessageId[0];
+                this.formData.EmailTo = this.replyTo;
             }
             if (this.emailData.cc != '') {
                 this.formData.EmailCc = this.emailData.cc;

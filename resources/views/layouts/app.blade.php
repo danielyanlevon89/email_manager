@@ -40,8 +40,7 @@
         :accountId="@js(session()->get('chosen_email_account',''))"
         :templates="@js($templates)"
         :email-data="@js($emailData??[])"
-        :reply-to="@js( isset($emailToReply) ? collect([$emailToReply])->toJson() : '' )"
-        :reply-to-message-d="@js( isset($emailToReplyMessageId) ? collect([$emailToReplyMessageId])->toJson() : '' )"
+        :reply-to="@js( $emailToReply ?? '' )"
         :openModal="@js($openModal??'')"
         :canBeReplied="@js($canBeReplied??'')"
      />
