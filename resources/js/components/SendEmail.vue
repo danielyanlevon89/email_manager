@@ -120,7 +120,11 @@ export default {
     },
     methods: {
         setReplyContent(val) {
-            return ' <br><br><br><blockquote style="border-left:1px solid #0857A6; margin:10px; padding:0 0 0 10px;">'+val+' </blockquote>';
+            return ' <br><br><br><div dir="ltr">'+this.emailData.email_date+' &lt;<a href="mailto:'+this.emailData.from+'" target="_blank">'+this.emailData.from+'</a>&gt;:<br></div>' +
+                '<blockquote style="border-left:1px solid #0857A6; margin:10px; padding:0 0 0 10px;">'+val.body+' </blockquote>';
+        },
+        setReplySubject(val) {
+            return val.includes('Re:') ? val : 'Re: '+val;
         },
         uploadFiles(e) {
             this.formData.Files = e.target.files;
@@ -224,10 +228,10 @@ export default {
                 this.formData.EmailCc = this.emailData.cc;
             }
             if (this.emailData.subject != '') {
-                this.formData.Subject = this.emailData.subject;
+                this.formData.Subject = this.setReplySubject(this.emailData.subject);
             }
             if (this.emailData.body != '') {
-                this.formData.Content = this.setReplyContent(this.emailData.body);
+                this.formData.Content = this.setReplyContent(this.emailData);
             }
             this.showModal = true
         },

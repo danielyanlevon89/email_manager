@@ -141,7 +141,7 @@ class ImapParsingService
 
                      $conversationemailsCount = (new IncomingEmailsController)->getIncomingEmailsCountFromEmailAddress($account,$this->incomingEmails['from']);
 
-                     if($account->auto_reply_is_active && $conversationemailsCount  == 1)
+                     if($account->auto_reply_is_active )
                      {
                          Str::of($this->incomingEmails['from'])->explode(',')->each(function (string $item, int $key) use ($account)
                          {
@@ -149,9 +149,11 @@ class ImapParsingService
                              $emailData = [
                                  'mail_to' => $item,
                                  'message_id' => $this->incomingEmails['message_id'] ?? null,
-                                 'subject' => $this->incomingEmails['subject'],
+                                 'subject' => str_contains($this->incomingEmails['subject'], 'Re:') ? $this->incomingEmails['subject'] : 'Re: '.$this->incomingEmails['subject'],
                                  'body' => $account->auto_reply .
-                                     '<br><br><br><blockquote style="border-left:1px solid #0857A6; margin:10px; padding:0 0 0 10px;">'
+                                     '<br><br><br>
+                                        <div dir="ltr">'.$this->incomingEmails['email_date'].' &lt;<a href="mailto:'.$this->incomingEmails['from'].'" target="_blank">'.$this->incomingEmails['from'].'</a>&gt;:<br></div>
+                                        <blockquote style="border-left:1px solid #0857A6; margin:10px; padding:0 0 0 10px;">'
                                      . $this->incomingEmails['body'] .
                                      '</blockquote>',
                              ];
