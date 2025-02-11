@@ -52,11 +52,11 @@ export default {
                                 <path d="M10 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3.465 14.493a1.23 1.23 0 0 0 .41 1.412A9.957 9.957 0 0 0 10 18c2.31 0 4.438-.784 6.131-2.1.43-.333.604-.903.408-1.41a7.002 7.002 0 0 0-13.074.003Z" />
                             </svg>
 
-                            <p class="mx-2 text-sm font-normal" v-text="choosenEmailAccountAddress"></p>
+                            <p class=" text-sm font-normal" v-text="choosenEmailAccountAddress"></p>
                         </div>
-                        <div class="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" >
-                            <a :href="'/email_accounts/' + choosenEmailAccountId + '/edit'" class="px-3 py-2 bg-sky-400/50 hover:bg-sky-600/50 text-white rounded-md font-semibold">{{Edit}} </a>
-                            <a href="/unset_email_account" class="px-3 py-2 bg-blue-400 hover:bg-blue-600 text-white rounded-md ml-3 font-semibold"> {{Logout}} </a>
+                        <div class="mx-4 px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200  dark:hover:bg-gray-800 dark:hover:text-gray-200" >
+                            <a :href="'/email_accounts/' + choosenEmailAccountId + '/edit'" class="px-3 py-2 bg-sky-200 hover:bg-sky-300 text-blue rounded-md font-semibold">{{Edit}} </a>
+                            <a href="/unset_email_account" class="px-3 py-2 bg-sky-300 hover:bg-sky-400 text-blue rounded-md ml-3 font-semibold"> {{Logout}} </a>
                         </div>
 
                         <a class="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="/dashboard">

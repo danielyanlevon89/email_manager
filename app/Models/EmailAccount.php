@@ -21,7 +21,6 @@ class EmailAccount extends Model
         'is_active',
         'user_id',
         'imap_scan_days_count',
-        'imap_result_limit',
 
         'smtp_host',
         'smtp_port',

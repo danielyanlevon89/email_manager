@@ -25,16 +25,14 @@ class EmailAccountRequest extends FormRequest
     {
 
         return [
-            'name' => ['required', 'max:60'],
+
             'email_address' => ['required',  'max:60','email'],
             'email_from' => ['required',  'max:60'],
             'auto_reply_is_active' => ['required',  'boolean'],
-            'auto_reply' => ['required'],
 
             'imap_host' => ['required', 'max:60'],
             'imap_port' => ['required', 'max:9999',"min:1","numeric"],
             'imap_scan_days_count' => ['required', 'max:9999',"min:1","numeric"],
-            'imap_result_limit' => ['required', 'max:9999',"min:1","numeric"],
             'imap_encryption' => ['required',  'max:60',Rule::in(Encryption::toArray())],
             'imap_username' => ['required',  'max:60'],
             'imap_password' => ['required',  'max:60'],

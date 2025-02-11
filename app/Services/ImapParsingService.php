@@ -85,7 +85,7 @@ class ImapParsingService
         $query
             ->to($account->email_address)
             ->since(Carbon::parse($account->imap_last_execute_time)->subDays($account->imap_scan_days_count))
-            ->limit(limit: $account->imap_result_limit)
+            ->limit(limit: 10)
             ->fetchOrderDesc()->chunked(function($messages, $chunk)  use($account){;
                 $messages->each(function($message,$key) use($account)
         {
@@ -189,7 +189,7 @@ class ImapParsingService
         $query
             ->from($account->email_address)
             ->since(Carbon::parse($account->imap_last_execute_time)->subDays($account->imap_scan_days_count))
-            ->limit(limit: $account->imap_result_limit)
+            ->limit(limit: 10)
             ->fetchOrderDesc()
             ->chunked(function($messages, $chunk)  use($account){;
                 $messages->each(function($message,$key) use($account)

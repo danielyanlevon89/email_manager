@@ -13,18 +13,17 @@ return new class extends Migration
     {
         Schema::create('email_accounts', function (Blueprint $table) {
             $table->id();
-            $table->string('name',60);
+            $table->boolean('is_active')->default(true);
 
             $table->string('imap_host',60);
             $table->integer('imap_port');
             $table->dateTime('imap_last_execute_time')->nullable();
             $table->integer('imap_last_execute_items_count')->nullable();
             $table->integer('imap_scan_days_count')->default(5);
-            $table->integer('imap_result_limit')->default(10);
-            $table->boolean('is_active')->default(true);
             $table->enum('imap_encryption',['starttls','ssl','tls']);
             $table->string('imap_username',60);
             $table->string('imap_password',60);
+            $table->boolean('imap_validation')->default(false);
 
             $table->string('smtp_host',60);
             $table->integer('smtp_port');
@@ -34,6 +33,7 @@ return new class extends Migration
             $table->enum('smtp_encryption',['starttls','ssl','tls']);
             $table->string('smtp_username',60);
             $table->string('smtp_password',60);
+            $table->boolean('smtp_validation')->default(false);
 
             $table->string('email_address',60);
             $table->string('email_from',60);

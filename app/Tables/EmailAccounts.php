@@ -53,7 +53,6 @@ class EmailAccounts extends AbstractTable
         $globalSearch = AllowedFilter::callback('global',function($query,$value){
             $query->where(function ($query) use ($value){
                 Collection::wrap($value)->each(function ($value) use ($query){
-                    $query->orWhere('name','LIKE',"%{$value}%");
                     $query->orWhere('imap_host','LIKE',"%{$value}%");
                     $query->orWhere('imap_port','LIKE',"%{$value}%");
                     $query->orWhere('imap_username','LIKE',"%{$value}%");
@@ -72,7 +71,6 @@ class EmailAccounts extends AbstractTable
             ->defaultSort('id')
             ->allowedSorts([
                 'id',
-                'name',
 
                 'imap_host',
                 'imap_port',
@@ -80,10 +78,8 @@ class EmailAccounts extends AbstractTable
                 'imap_username',
                 'imap_password',
                 'imap_scan_days_count',
-                'imap_result_limit',
                 'is_active',
                 'auto_reply_is_active',
-                'imap_result_limit',
                 'imap_last_execute_time',
                 'imap_last_execute_items_count',
 
@@ -122,7 +118,6 @@ class EmailAccounts extends AbstractTable
             ->withGlobalSearch(columns: ['name'])
 
             ->column('id', sortable: true, hidden: true)
-            ->column('name', canBeHidden: false,sortable: true,label: __('Account Name') )
             ->column('email_address', sortable: true )
             ->column('email_from', sortable: true)
             ->column('is_active', sortable: true,  as: fn ($is_active) => ($is_active) ? Boolean::true : Boolean::false)
@@ -136,7 +131,6 @@ class EmailAccounts extends AbstractTable
             ->column('imap_last_execute_time', sortable: true, hidden: true)
             ->column('imap_last_execute_items_count', sortable: true, hidden: true)
             ->column('imap_scan_days_count', sortable: true, hidden: true)
-            ->column('imap_result_limit', sortable: true, hidden: true)
 
             ->column('smtp_host', sortable: true, hidden: true)
             ->column('smtp_port', sortable: true, hidden: true)

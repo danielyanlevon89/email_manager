@@ -63,9 +63,6 @@
                     <div class="sm:col-span-1">
                         <x-splade-input name="imap_scan_days_count" type="number" :label="__('Days For Scanning')" />
                     </div>
-                    <div class="sm:col-span-1">
-                        <x-splade-input name="imap_result_limit" type="number"  :label="__('Scanning Result Limit')" />
-                    </div>
                 </div>
 
                 <h1 class="text-center  font-medium text-3xl">{{__('SMTP Account')}}</h1>

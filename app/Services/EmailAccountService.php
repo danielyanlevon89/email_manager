@@ -4,6 +4,7 @@ namespace App\Services;
 
 
 use App\Models\EmailAccount;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
@@ -20,6 +21,9 @@ class EmailAccountService
 
         $smtpAccount = EmailAccount::findOrFail($id);
 
+        $smtpAccount->smtp_validation = false;
+        $smtpAccount->save();
+
         try {
 
             $transport = new EsmtpTransport(
@@ -33,6 +37,10 @@ class EmailAccountService
             $transport->start();
             $result['message'] ='SMTP is connected';
             $result['type'] ='success';
+            $result['validAccount'] = true;
+
+            $smtpAccount->smtp_validation = true;
+            $smtpAccount->save();
 
             exit(json_encode($result));
 
@@ -54,6 +62,8 @@ class EmailAccountService
         $cm = new ClientManager($options = []);
         $imapAccount = EmailAccount::findOrFail($id);
 
+        $imapAccount->imap_validation = false;
+        $imapAccount->save();
 
         $client = $cm->make([
             'host' => $imapAccount->imap_host,
@@ -71,6 +81,11 @@ class EmailAccountService
             {
                 $result['message'] ='IMAP is connected';
                 $result['type'] ='success';
+                $result['validAccount'] = true;
+
+                $imapAccount->imap_validation = true;
+                $imapAccount->save();
+
             } else {
                 $result['message'] ='IMAP is not connected';
             }

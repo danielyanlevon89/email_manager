@@ -5,27 +5,41 @@ export default {
     data() {
         return {
             textNotes: {
-                'checkSmtpConnection': 'Test Smtp Connection',
-                'checkSmtpConnectionProcess': 'Connection Process ...',
+                'checkSmtpConnection': 'Test Smtp',
+                'checkSmtpConnectionProcess': 'Process ...',
                 'SmtpError': 'Smtp Account Id Is Empty',
             },
             message: '',
             messageType: '',
             loading: false,
+            validAccount: false,
         }
     },
     props: {
         accountId: {
             type: String,
             require: true,
+        },
+        validAccount: {
+            type: String,
+            require: true
         }
+    },
+    mounted() {
+        this.validAccount = this.$props.validAccount
     },
     computed: {
         buttonText() {
             return this.loading ? this.textNotes.checkSmtpConnectionProcess : this.textNotes.checkSmtpConnection;
         },
+        validationClassNames() {
+            return this.validAccount == 1 ? 'valid' : 'invalid';
+        },
     },
     methods: {
+        changeValidationValue(validation) {
+            this.validAccount = validation
+        },
         async checkSmtp() {
 
             if (typeof this.accountId == 'undefined') {
@@ -41,6 +55,7 @@ export default {
                 .then(res => {
                     this.message = res.data.message
                     this.messageType = res.data.type
+                    this.changeValidationValue(res.data.validAccount ?? false)
                 })
                 .finally(() => this.loading = false);
 
@@ -58,11 +73,27 @@ export default {
 <template>
 
     <button @click="checkSmtp()" :disabled="loading"
-            class="px-3 py-2 bg-yellow-400 hover:bg-yellow-600 text-white rounded-md font-semibold ml-3 ">
+            class="px-3 py-2 bg-sky-200 hover:bg-sky-300 text-blue rounded-md font-semibold ml-3 ">
         {{ buttonText }}
+        <span class="cycle" :class=" validationClassNames "></span>
     </button>
 </template>
 
 <style scoped>
+.valid{
+    background-color: green;
+}
+.invalid{
+    background-color: red;
+}
+.cycle{
+    float: right;
+    margin-top: 3px;
+    margin-left: 10px;
+    border-radius: 10px;
+    height: 15px;
+    width: 15px;
+    display: block;
 
+}
 </style>
