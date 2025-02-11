@@ -84,7 +84,7 @@ class SendEmailService
         $outgoingEmail['from'] = $emailData['from']['address'];
         $outgoingEmail['to'] = isset($emailData['to']) ? implode(',',$emailData['to']) : '';
         $outgoingEmail['cc'] = $emailData['cc'] ? implode(',',$emailData['cc']) : '';
-        $outgoingEmail['subject'] = iconv_mime_decode($emailData["subject"], ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
+        $outgoingEmail['subject'] = $emailData["subject"];
         $outgoingEmail['reply_message_id'] = $emailData["message_id"] ?? '';
         $outgoingEmail['body'] = $emailData['content'];
         $outgoingEmail['email_date'] = Carbon::now();
