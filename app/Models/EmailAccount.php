@@ -50,6 +50,11 @@ class EmailAccount extends Model
      */
     public function scopeImapActive(Builder $query): void
     {
-        $query->where('is_active', 1);
+        $query->where('is_active', 1)->where('imap_validation',true);
+    }
+
+    public function scopeSmtpIsValid(Builder $query): void
+    {
+        $query->where('smtp_validation',true);
     }
 }

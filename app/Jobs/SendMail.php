@@ -48,7 +48,7 @@ class SendMail implements ShouldQueue
     public function handle(): void
     {
 
-        $account = EmailAccount::find($this->account_id);
+        $account = EmailAccount::smtpIsValid()->findOrFail($this->account_id);
         $mail = Mail::build([
             'transport' => 'smtp',
             'host' => $account->smtp_host ?? Config::get('mail.mailers.smtp.host'),
