@@ -141,7 +141,7 @@ class ImapParsingService
 
                      $conversationemailsCount = (new IncomingEmailsController)->getIncomingEmailsCountFromEmailAddress($account,$this->incomingEmails['from']);
 
-                     if($account->auto_reply_is_active )
+                     if($account->auto_reply_is_active && $conversationemailsCount  == 1)
                      {
                          Str::of($this->incomingEmails['from'])->explode(',')->each(function (string $item, int $key) use ($account)
                          {
