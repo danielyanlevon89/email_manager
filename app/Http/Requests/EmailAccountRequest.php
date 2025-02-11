@@ -29,7 +29,7 @@ class EmailAccountRequest extends FormRequest
             'email_address' => ['required',  'max:60','email'],
             'email_from' => ['required',  'max:60'],
             'auto_reply_is_active' => ['required',  'boolean'],
-            'auto_reply' => ['string'],
+            'auto_reply' => ['string','nullable'],
 
             'imap_host' => ['required', 'max:60'],
             'imap_port' => ['required', 'max:9999',"min:1","numeric"],
