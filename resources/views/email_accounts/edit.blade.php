@@ -15,9 +15,6 @@
                 <h1 class="text-center font-medium text-3xl">{{__('Account Name')}}</h1>
                 <div class="mt-10 mb-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div class="sm:col-span-2">
-                        <x-splade-input name="name"  :label="__('Account Name')" />
-                    </div>
-                    <div class="sm:col-span-2">
                         <x-splade-input name="email_address"  :label="__('Email Address')" />
                     </div>
                     <div class="sm:col-span-2">
