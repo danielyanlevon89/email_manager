@@ -98,7 +98,7 @@ class ImapParsingService
                  ['email_accounts_id',  $account->id],
                  ['from', Str::getEmailAddressesFromString($message->getAttributes()['fromaddress'])],
                  ['to', Str::getEmailAddressesFromString($message->getAttributes()['toaddress'])],
-                 ['subject', iconv_mime_decode($message->getAttributes()["subject"],ICONV_MIME_DECODE_CONTINUE_ON_ERROR,'UTF-8')],
+                 ['subject', $message->getAttributes()["subject"]],
                  ['email_date', Carbon::createFromDate((string) $message->getAttributes()['date'])->toDateTimeString()],
              ])->count() == 0) {
                  $this->incomingEmails['user_id'] = $account->user_id;
@@ -203,7 +203,7 @@ class ImapParsingService
                     ['email_accounts_id',  $account->id],
                     ['from', Str::getEmailAddressesFromString($message->getAttributes()['fromaddress'])],
                     ['to', Str::getEmailAddressesFromString($message->getAttributes()['toaddress'])],
-                    ['subject', iconv_mime_decode($message->getAttributes()["subject"],ICONV_MIME_DECODE_CONTINUE_ON_ERROR,'UTF-8')],
+                    ['subject', $message->getAttributes()["subject"]],
                     ['email_date', Carbon::createFromDate((string) $message->getAttributes()['date'])->toDateTimeString()],
                 ])->count() == 0)
             {
