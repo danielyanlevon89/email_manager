@@ -108,7 +108,7 @@ class ImapParsingService
                  $this->incomingEmails['from'] = Str::getEmailAddressesFromString($message->getAttributes()['fromaddress']);
                  $this->incomingEmails['to'] = Str::getEmailAddressesFromString($message->getAttributes()['toaddress']);
                  $this->incomingEmails['cc'] = isset($message->getAttributes()['ccaddress']) ? Str::getEmailAddressesFromString($message->getAttributes()['ccaddress']) : '';
-                 $this->incomingEmails['subject'] = iconv_mime_decode($message->getAttributes()["subject"], ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
+                 $this->incomingEmails['subject'] = $message->getAttributes()["subject"];
                  $this->incomingEmails['message_id'] = $message->getAttributes()["message_id"] ?? '';
                  $this->incomingEmails['reply_message_id'] = $message->getAttributes()["references"] ?? '';
                  $this->incomingEmails['body'] = $message->hasHTMLBody() ? $message->getHTMLBody() : $message->getTextBody();
@@ -214,7 +214,7 @@ class ImapParsingService
                 $this->outgoingEmails['from'] = Str::getEmailAddressesFromString($message->getAttributes()['fromaddress']);
                 $this->outgoingEmails['to'] = Str::getEmailAddressesFromString($message->getAttributes()['toaddress']);
                 $this->outgoingEmails['cc'] = isset($message->getAttributes()['ccaddress']) ? Str::getEmailAddressesFromString($message->getAttributes()['ccaddress']) : '';
-                $this->outgoingEmails['subject'] = iconv_mime_decode($message->getAttributes()["subject"], ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
+                $this->outgoingEmails['subject'] = $message->getAttributes()["subject"];
                 $this->outgoingEmails['message_id'] = $message->getAttributes()["message_id"] ?? '';
                 $this->outgoingEmails['reply_message_id'] = $message->getAttributes()["references"] ?? '';
                 $this->outgoingEmails['body'] = $message->hasHTMLBody() ? $message->getHTMLBody() : $message->getTextBody();
