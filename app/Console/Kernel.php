@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:scan-server')
             ->onOneServer()
             ->withoutOverlapping()
-            ->everyMinute();
+            ->everyFiveMinutes();
 
         $schedule->command('telescope:prune --hours=48')->daily();
 
