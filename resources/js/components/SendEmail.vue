@@ -26,6 +26,7 @@ export default {
                 'ContentEmpty': 'Content Can not be empty',
                 'NewMessage': 'New Message',
                 'Reply': 'Reply',
+                'Keywords': 'Use keywords to implement variables into template',
             },
             message: '',
             title: 'Send New Email',
@@ -338,6 +339,7 @@ export default {
                                         </label>
 
                                         <jodit-editor name="body" v-model="formData.Content"/>
+                                        <p class="text-right mt-2">{{textNotes.Keywords}} {url} , {name} , {email}</p>
                                     </div>
                                 </div>
 

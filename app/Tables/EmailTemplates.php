@@ -78,7 +78,7 @@ class EmailTemplates extends AbstractTable
                 confirmText:  __('Are you sure?'),
                 confirmButton: __('Yes'),
                 cancelButton: __('Cancel'),
-                after: fn() =>  Toast::title(__('Templates Deleted Successfully'))->autoDismiss(2)
+                after: fn() =>  Toast::title(__('Template(s) Deleted Successfully'))->autoDismiss(2)
             )
             ->paginate(10);
     }

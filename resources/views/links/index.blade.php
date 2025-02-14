@@ -2,11 +2,11 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Templates') }}
+                {{ __('Links') }}
             </h2>
-            <Link href="{{route('templates.create')}}"
+            <Link href="{{route('links.create')}}"
                   class="px-4 py-2 bg-indigo-400 hover:bg-indigo-600 text-white rounded-md">
-            {{ __('Add New Template') }}
+            {{ __('Add New Link') }}
             </Link>
         </div>
     </x-slot>
@@ -15,22 +15,22 @@
         <div>
             <div class="bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 py-16  bg-white border-b border-gray-200">
-                    <x-splade-table :for="$templates">
+                    <x-splade-table :for="$links">
                         <x-slot:empty-state>
-                            <p class="text-center">{{ __('Templates is empty') }}</p>
+                            <p class="text-center">{{ __('Links is empty') }}</p>
                             </x-slot>
 
-                            @cell('action',$template)
+                            @cell('action',$link)
                             <div class="text-right">
-                                <Link href="{{ route('templates.edit',$template->id) }}"
+                                <Link href="{{ route('links.edit',$link->id) }}"
                                       class="px-3 py-2 bg-sky-200 hover:bg-sky-300 text-blue rounded-md font-semibold">{{ __('Edit') }}
                                 </Link>
                                 <Link
-                                        confirm="{{ __('Delete Template') }}"
+                                        confirm="{{ __('Delete Link') }}"
                                         confirm-text="{{ __('Are you sure?') }}"
                                         confirm-button="{{ __('Yes') }}"
                                         cancel-button="{{ __('Canceel') }}"
-                                        href="{{ route('templates.destroy',$template->id) }}" method="DELETE"
+                                        href="{{ route('links.destroy',$link->id) }}" method="DELETE"
                                         preserve-scroll
                                         class="px-2 py-2 bg-red-400 hover:bg-red-600 text-white rounded-md ml-3 font-semibold">
 

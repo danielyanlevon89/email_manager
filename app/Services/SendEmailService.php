@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Jobs\SendMail;
+use App\Models\BlackList;
 use App\Models\EmailAccount;
+use App\Models\Link;
 use App\Models\OutgoingEmail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -82,8 +84,8 @@ class SendEmailService
         $outgoingEmail['created_at'] = Carbon::now();
         $outgoingEmail['updated_at'] = Carbon::now();
         $outgoingEmail['from'] = $emailData['from']['address'];
-        $outgoingEmail['to'] = isset($emailData['to']) ? implode(',',$emailData['to']) : '';
-        $outgoingEmail['cc'] = $emailData['cc'] ? implode(',',$emailData['cc']) : '';
+        $outgoingEmail['to'] = isset($emailData['to']) ? implode(',', $emailData['to']) : '';
+        $outgoingEmail['cc'] = $emailData['cc'] ? implode(',', $emailData['cc']) : '';
         $outgoingEmail['subject'] = $emailData["subject"];
         $outgoingEmail['reply_message_id'] = $emailData["message_id"] ?? '';
         $outgoingEmail['body'] = $emailData['content'];
@@ -93,16 +95,13 @@ class SendEmailService
         DB::beginTransaction();
         try {
             $outgoingEmailId = OutgoingEmail::insertGetId($outgoingEmail);
-            if($outgoingEmail['has_attachment'])
-            {
+            if ($outgoingEmail['has_attachment']) {
 
-                try
-                {
-                    if(Storage::directoryMissing('public/attachments/outgoing/'.$outgoingEmailId))
-                    {
-                        Storage::makeDirectory('public/attachments/outgoing/'.$outgoingEmailId);
+                try {
+                    if (Storage::directoryMissing('public/attachments/outgoing/' . $outgoingEmailId)) {
+                        Storage::makeDirectory('public/attachments/outgoing/' . $outgoingEmailId);
                     }
-                    Storage::move('public/attachments/sendemail/'.$emailData['attachments_path'],'public/attachments/outgoing/'.$outgoingEmailId);
+                    Storage::move('public/attachments/sendemail/' . $emailData['attachments_path'], 'public/attachments/outgoing/' . $outgoingEmailId);
 
                 } catch (\Exception $e) {
                     Log::error($e->getMessage());
@@ -112,10 +111,26 @@ class SendEmailService
 
             DB::commit();
         } catch (\Exception $e) {
-            Log::error("Failed to add send email into database. message: ".$e->getLine() .$e->getFile(). $e->getMessage());
+            Log::error("Failed to add send email into database. message: " . $e->getLine() . $e->getFile() . $e->getMessage());
             DB::rollback();
         }
 
+
+    }
+
+    public function replaceEmailDataKeywords($account, $emailData)
+    {
+        $emailData['content'] = Str::swap([
+            '{email}' => $emailData['to'][0] ?? '',
+            '{name}' => $emailData['to_name'] ?? '',
+            '{url}' => Link::where('user_id', $account->user_id)->inRandomOrder()->first()->url ?? '',
+        ], $emailData['content']);
+
+        $emailData['subject'] = Str::swap([
+            '{name}' => $emailData['to_name'] ?? '',
+        ], $emailData['subject']);
+
+        return $emailData;
 
     }
 }

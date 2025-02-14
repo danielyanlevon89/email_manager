@@ -31,7 +31,7 @@ class ScanServer extends Command
      */
     public function handle(ImapParsingService $imapParsingService)
     {
-        Log::info("ImapParsingService run");
+        Log::info("Imap Parsing script running");
         EmailAccount::imapActive()->each(function ($account) use ($imapParsingService) {
             $imapParsingService->scanImapServer($account);
         });

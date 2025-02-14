@@ -43,6 +43,18 @@ class AppServiceProvider extends ServiceProvider
             return $emails;
         });
 
+        Str::macro('getEmailNameFromString', function ($value) {
+            $email_name = '';
+            foreach(preg_split('/\s/', $value) as $token) {
+                $email = filter_var(filter_var($token, FILTER_SANITIZE_EMAIL), FILTER_VALIDATE_EMAIL);
+                if ($email !== false) {
+                    $email_name = str_replace([$email,'<','>'],'',$value);
+
+                }
+            }
+            return $email_name;
+        });
+
         Str::macro('getEmailAddressesFromString', function ($value) {
             $emails = [];
             foreach(preg_split('/\s/', $value) as $token) {

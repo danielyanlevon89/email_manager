@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Jobs;
 
 use App\Models\EmailAccount;
@@ -21,22 +22,19 @@ class SendMail implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private array $data,private  $account_id = null)
+    public function __construct(private array $data, private $account_id = null)
     {
 
         $this->data['mail_to'] = explode(",", $this->data['mail_to']);
         $this->data['mail_cc'] = isset($this->data['mail_cc']) ? explode(",", $this->data['mail_cc']) : '';
 
-        if(!isset($data['message_id']))
-        {
+        if (!isset($data['message_id'])) {
             unset($this->data['message_id']);
         }
-        if(!isset($data['mail_cc']))
-        {
+        if (!isset($data['mail_cc'])) {
             unset($this->data['mail_cc']);
         }
-        if(!isset($data['attachments_path']))
-        {
+        if (!isset($data['attachments_path'])) {
             unset($this->data['attachments_path']);
         }
     }
@@ -70,20 +68,23 @@ class SendMail implements ShouldQueue
                     'name' => $account->email_from ?? env('MAIL_FROM_NAME')
                 ],
                 'to' => $this->data['mail_to'],
-                'cc' => $this->data['mail_cc'] ??'',
+                'to_name' => $this->data['mail_to_name'] ?? '',
+                'cc' => $this->data['mail_cc'] ?? '',
                 'message_id' => $this->data['message_id'] ?? '',
                 'subject' => $this->data['subject'],
                 'content' => $this->data['body'],
                 'attachments_path' => $this->data['attachments_path'] ?? '',
             ];
 
+            $emailData = (new SendEmailService)->replaceEmailDataKeywords($account, $emailData);
+
             $mail->send(new EmailStructureService($emailData));
 
-            (new SendEmailService)->addSentEmail($account,$emailData);
+            (new SendEmailService)->addSentEmail($account, $emailData);
 
-            Log::info("Email sent from account: {$account->email_address}",$this->data);
+            Log::info("Email sent from account: {$account->email_address}", $this->data);
         } catch (\Exception $e) {
-            Log::error("Failed to send email from account: {$account->email_address} message: ".$e->getLine() .$e->getFile(). $e->getMessage());
+            Log::error("Failed to send email from account: {$account->email_address} message: " . $e->getLine() . $e->getFile() . $e->getMessage());
         }
 
     }

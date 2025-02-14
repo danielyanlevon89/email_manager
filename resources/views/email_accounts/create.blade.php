@@ -21,7 +21,11 @@
                     <div class="sm:col-span-2">
                         <x-splade-input name="email_from"  :label="__('Email From')" />
                     </div>
+                    <div class="sm:col-span-2">
+                        <x-splade-select name="templates" :options="$templatesLabels" :placeholder="__('Choose Template')" option-label="name" option-label="id" :label="__('Choose Auto Reply Template')" />
+                    </div>
                     <div class="sm:col-span-6">
+
                         <x-splade-defer
                             url=`/get_template/${form.templates}`
                             method="get"
@@ -32,12 +36,13 @@
                             <x-splade-wysiwyg name="auto_reply" v-model="form.auto_reply" id="auto_reply"  :label="__('Auto Reply Text')"  />
                         </x-splade-defer>
                     </div>
-                    <div class="sm:col-span-4">
+                    <div class="sm:col-span-2">
                         <x-splade-checkbox name="auto_reply_is_active" false-value="0" :label="__('Auto Reply Is Active')" />
                     </div>
-                    <div class="sm:col-span-2">
-                        <x-splade-select name="templates" :options="$templatesLabels" :placeholder="__('Choose Template')" option-label="name" option-label="id" :label="__('Choose Auto Reply Template')" />
+                    <div class="sm:col-span-4">
+                        <p class="text-right mt-2">{{__('Use keywords to implement variables into template')}} {url} , {name} , {email}</p>
                     </div>
+
                 </div>
 
                 <h1 class="text-center  font-medium text-3xl">{{__('IMAP Account')}}</h1>
