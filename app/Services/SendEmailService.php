@@ -121,9 +121,12 @@ class SendEmailService
     public function replaceEmailDataKeywords($account, $emailData)
     {
         $emailData['content'] = Str::swap([
-            '{email}' => $emailData['to'][0] ?? '',
-            '{name}' => $emailData['to_name'] ?? '',
+            '{sender_email}' => $emailData['from']['address'] ?? '',
+            '{sender_name}' => $emailData['from']['name'] ?? '',
+            '{recipient_email}' => $emailData['to'][0] ?? '',
+            '{recipient_name}' => $emailData['to_name'] ?? '',
             '{url}' => Link::where('user_id', $account->user_id)->inRandomOrder()->first()->url ?? '',
+            '{email_date}' => date('Y-m-d'),
         ], $emailData['content']);
 
         $emailData['subject'] = Str::swap([

@@ -339,7 +339,7 @@ export default {
                                         </label>
 
                                         <jodit-editor name="body" v-model="formData.Content"/>
-                                        <p class="text-right mt-2">{{textNotes.Keywords}} {url} , {name} , {email}</p>
+                                        <p class="text-right mt-2">{{textNotes.Keywords}} {url} , {sender_name} , {sender_email} , {recipient_name} , {recipient_email} , {email_date}</p>
                                     </div>
                                 </div>
 

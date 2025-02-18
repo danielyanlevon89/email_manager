@@ -15,7 +15,7 @@
 
                 <x-splade-wysiwyg name="text" :label="__('Text')" />
 
-                <p class="text-right mt-2">{{__('Use keywords to implement variables into template')}} {url} , {name} , {email}</p>
+                <p class="text-right mt-2">{{__('Use keywords to implement variables into template')}} {url} , {sender_name} , {sender_email} , {recipient_name} , {recipient_email} , {email_date}</p>
 
                 <x-splade-submit class="mt-4" :label="__('Save')"/>
             </x-splade-form>
