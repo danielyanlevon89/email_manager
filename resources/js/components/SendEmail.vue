@@ -26,7 +26,7 @@ export default {
                 'ContentEmpty': 'Content Can not be empty',
                 'NewMessage': 'New Message',
                 'Reply': 'Reply',
-                'Keywords': 'Use keywords to implement variables into template',
+                'Keywords': 'Keywords: ',
             },
             message: '',
             title: 'Send New Email',

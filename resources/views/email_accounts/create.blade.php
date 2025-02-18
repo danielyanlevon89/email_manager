@@ -40,7 +40,7 @@
                         <x-splade-checkbox name="auto_reply_is_active" false-value="0" :label="__('Auto Reply Is Active')" />
                     </div>
                     <div class="sm:col-span-4">
-                        <p class="text-right mt-2">{{__('Use keywords to implement variables into template')}} {url} , {sender_name} , {sender_email} , {recipient_name} , {recipient_email} , {email_date}</p>
+                        <p class="text-right mt-2">{{__('Keywords: ')}} {url} , {sender_name} , {sender_email} , {recipient_name} , {recipient_email} , {email_date}</p>
                     </div>
 
                 </div>
