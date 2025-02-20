@@ -8,6 +8,7 @@ use App\Http\Controllers\IncomingEmailsController;
 use App\Http\Controllers\EmailDetailsController;
 use App\Http\Controllers\ExecuteArtisanCommandController;
 use App\Services\EmailAccountService;
+use App\Services\ImportService;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\ProviderController;
 use App\Services\SendEmailService;
@@ -68,6 +69,8 @@ Route::middleware('splade')->group(function () {
         Route::resource('/black_lists', BlackListController::class);
         Route::resource('/common_settings', CommonSettingController::class);
 
+        Route::post('import/{import_type}', [ImportService::class, 'import']);
+
         Route::get('/dashboard', function () {
             return view('dashboard');
         })->middleware(['verified'])->name('dashboard');
@@ -82,6 +85,7 @@ Route::middleware('splade')->group(function () {
         Route::get('outgoing_emails', [OutgoingEmailsController::class, 'index'])->name('outgoing_emails.index');
 
         Route::post('send_email', [SendEmailService::class, 'sendEmail']);
+
 
         Route::get('storage/{name}', function ($name) {
             $path = storage_path($name);

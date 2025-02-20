@@ -4,10 +4,13 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Templates') }}
             </h2>
-            <Link href="{{route('templates.create')}}"
-                  class="px-4 py-2 bg-indigo-400 hover:bg-indigo-600 text-white rounded-md">
-            {{ __('Add New Template') }}
-            </Link>
+            <div>
+                <import :import-type='"template"' :import-title='"Import Templates"'  />
+                <Link href="{{route('templates.create')}}"
+                      class="px-4 py-2 bg-indigo-400 hover:bg-indigo-600 text-white rounded-md">
+                {{ __('Add New Template') }}
+                </Link>
+            </div>
         </div>
     </x-slot>
 

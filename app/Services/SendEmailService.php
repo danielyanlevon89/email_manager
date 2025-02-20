@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Jobs\SendMail;
-use App\Models\BlackList;
 use App\Models\EmailAccount;
 use App\Models\Link;
 use App\Models\OutgoingEmail;
@@ -13,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use ProtoneMedia\Splade\Facades\Toast;
+
 
 class SendEmailService
 {

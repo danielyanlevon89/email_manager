@@ -4,10 +4,13 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Black List') }}
             </h2>
-            <Link href="{{route('black_lists.create')}}"
-                  class="px-4 py-2 bg-indigo-400 hover:bg-indigo-600 text-white rounded-md">
-            {{ __('Add New Black List Item') }}
-            </Link>
+            <div>
+                <import :import-type='"black_list"' :import-title='"Import Black List"'  />
+                <Link href="{{route('black_lists.create')}}"
+                      class="px-4 py-2 bg-indigo-400 hover:bg-indigo-600 text-white rounded-md">
+                {{ __('Add New Black List Item') }}
+                </Link>
+            </div>
         </div>
     </x-slot>
 

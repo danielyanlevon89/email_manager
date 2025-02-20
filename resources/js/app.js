@@ -30,6 +30,7 @@ createApp({
     .component('checkimapconnection', defineAsyncComponent(() => import("./components/CheckImapConnection.vue")))
     .component('checksmtpconnection', defineAsyncComponent(() => import("./components/CheckSmtpConnection.vue")))
     .component('sendemail', defineAsyncComponent(() => import("./components/SendEmail.vue")))
+    .component('import', defineAsyncComponent(() => import("./components/Import.vue")))
 
     .component('Counter', defineAsyncComponent(() => import("./components/Counter.vue")))
     .mount(el);

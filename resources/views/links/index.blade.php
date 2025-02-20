@@ -4,10 +4,13 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Links') }}
             </h2>
-            <Link href="{{route('links.create')}}"
-                  class="px-4 py-2 bg-indigo-400 hover:bg-indigo-600 text-white rounded-md">
-            {{ __('Add New Link') }}
-            </Link>
+            <div>
+                <import :import-type='"link"' :import-title='"Import Links"'  />
+                <Link href="{{route('links.create')}}"
+                      class="px-4 py-2 bg-indigo-400 hover:bg-indigo-600 text-white rounded-md">
+                {{ __('Add New Link') }}
+                </Link>
+            </div>
         </div>
     </x-slot>
 

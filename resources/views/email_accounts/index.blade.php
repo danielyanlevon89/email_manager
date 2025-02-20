@@ -4,10 +4,13 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Email Accounts') }}
             </h2>
-            <Link href="{{route('email_accounts.create')}}"
-                  class="px-4 py-2 bg-indigo-400 hover:bg-indigo-600 text-white rounded-md">
-            {{ __('Add New Account') }}
-            </Link>
+            <div>
+                <import :import-type='"email_account"' :import-title='"Import Accounts"'  />
+                <Link href="{{route('email_accounts.create')}}"
+                      class="px-4 py-2 bg-indigo-400 hover:bg-indigo-600 text-white rounded-md">
+                {{ __('Add New Account') }}
+                </Link>
+            </div>
         </div>
     </x-slot>
 

@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-
-use Couchbase\ViewResult;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\UnauthorizedException;

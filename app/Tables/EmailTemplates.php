@@ -69,6 +69,7 @@ class EmailTemplates extends AbstractTable
             ->withGlobalSearch(columns: ['name'])
             ->column('id', sortable: true)
             ->column('name', canBeHidden: false,sortable: true)
+            ->column('text', hidden: true,exportAs: true)
             ->column('action', exportAs: false,alignment: 'right')
             ->export()
             ->bulkAction(

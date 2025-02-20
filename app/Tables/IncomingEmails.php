@@ -5,7 +5,6 @@ namespace App\Tables;
 
 use App\Enums\Boolean;
 use App\Http\Controllers\IncomingEmailsController;
-use App\Models\EmailAddress;
 use App\Models\IncomingEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;

@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libmcrypt-dev \
     zip \
+    libzip-dev \
     nano \
     telnet \
     unzip \
@@ -55,7 +56,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install PHP extensions
 
 RUN docker-php-ext-install mbstring exif pcntl bcmath gd
-
+RUN docker-php-ext-install zip
 
 #RUN docker-php-source extract \
 #    && docker-php-ext-install bcmath mbstring pdo_pgsql soap sockets zip exif pcntl bcmath gd \
