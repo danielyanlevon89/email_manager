@@ -9,6 +9,7 @@ use App\Http\Controllers\IncomingEmailsController;
 use App\Models\EmailAccount;
 use App\Models\EmailTemplate;
 use App\Models\IncomingEmail;
+use App\Services\EmailAccountService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -50,24 +51,24 @@ class EmailAccounts extends AbstractTable
      */
     public function for()
     {
-        $globalSearch = AllowedFilter::callback('global',function($query,$value){
-            $query->where(function ($query) use ($value){
-                Collection::wrap($value)->each(function ($value) use ($query){
-                    $query->orWhere('imap_host','LIKE',"%{$value}%");
-                    $query->orWhere('imap_port','LIKE',"%{$value}%");
-                    $query->orWhere('imap_username','LIKE',"%{$value}%");
+        $globalSearch = AllowedFilter::callback('global', function ($query, $value) {
+            $query->where(function ($query) use ($value) {
+                Collection::wrap($value)->each(function ($value) use ($query) {
+                    $query->orWhere('imap_host', 'LIKE', "%{$value}%");
+                    $query->orWhere('imap_port', 'LIKE', "%{$value}%");
+                    $query->orWhere('imap_username', 'LIKE', "%{$value}%");
 
-                    $query->orWhere('smtp_host','LIKE',"%{$value}%");
-                    $query->orWhere('smtp_port','LIKE',"%{$value}%");
-                    $query->orWhere('smtp_username','LIKE',"%{$value}%");
+                    $query->orWhere('smtp_host', 'LIKE', "%{$value}%");
+                    $query->orWhere('smtp_port', 'LIKE', "%{$value}%");
+                    $query->orWhere('smtp_username', 'LIKE', "%{$value}%");
 
-                    $query->orWhere('email_address','LIKE',"%{$value}%");
-                    $query->orWhere('email_from','LIKE',"%{$value}%");
+                    $query->orWhere('email_address', 'LIKE', "%{$value}%");
+                    $query->orWhere('email_from', 'LIKE', "%{$value}%");
                 });
             });
         });
 
-        return  QueryBuilder::for(EmailAccount::where('user_id',Auth::id()))
+        return QueryBuilder::for(EmailAccount::where('user_id', Auth::id()))
             ->defaultSort('id')
             ->allowedSorts([
                 'id',
@@ -116,13 +117,11 @@ class EmailAccounts extends AbstractTable
 
         $table
             ->withGlobalSearch(columns: ['name'])
-
             ->column('id', sortable: true, hidden: true)
-            ->column('email_address', sortable: true )
+            ->column('email_address', sortable: true)
             ->column('email_from', sortable: true)
-            ->column('is_active', sortable: true,  as: fn ($is_active) => ($is_active) ? Boolean::true : Boolean::false)
-            ->column('auto_reply_is_active', sortable: true,  as: fn ($reply_is_active) => ($reply_is_active) ? Boolean::true : Boolean::false)
-
+            ->column('is_active', sortable: true, as: fn($is_active) => ($is_active) ? Boolean::true : Boolean::false)
+            ->column('auto_reply_is_active', sortable: true, as: fn($reply_is_active) => ($reply_is_active) ? Boolean::true : Boolean::false)
             ->column('imap_host', sortable: true, hidden: true)
             ->column('imap_port', sortable: true, hidden: true)
             ->column('imap_encryption', sortable: true, hidden: true)
@@ -131,7 +130,6 @@ class EmailAccounts extends AbstractTable
             ->column('imap_last_execute_time', sortable: true, hidden: true)
             ->column('imap_last_execute_items_count', sortable: true, hidden: true)
             ->column('imap_scan_days_count', sortable: true, hidden: true)
-
             ->column('smtp_host', sortable: true, hidden: true)
             ->column('smtp_port', sortable: true, hidden: true)
             ->column('smtp_encryption', sortable: true, hidden: true)
@@ -140,39 +138,43 @@ class EmailAccounts extends AbstractTable
             ->column('smtp_last_execute_time', sortable: true, hidden: true)
             ->column('smtp_last_execute_items_count', sortable: true, hidden: true)
             ->column('smtp_send_email_count_in_minute', sortable: true, hidden: true)
-
-            ->column('action', exportAs: false,alignment: 'right')
-            ->selectFilter('is_active',options: Boolean::toArray())
-            ->selectFilter('auto_reply_is_active',options: Boolean::toArray())
+            ->column('action', exportAs: false, alignment: 'right')
+            ->selectFilter('is_active', options: Boolean::toArray())
+            ->selectFilter('auto_reply_is_active', options: Boolean::toArray())
             ->export()
+            ->bulkAction(
+                label: __('Check Imap,Smtp'),
+                each: fn(EmailAccount $account) => (new EmailAccountService())->checkCredentials($account),
+                after: fn() => Toast::title(__('Email Account(s) Credentials Checking Added To Queue'))->autoDismiss(2)
+            )
             ->bulkAction(
                 label: __('Enable'),
                 each: fn(EmailAccount $account) => (new EmailAccountController())->setActive($account),
-                after: fn() =>  Toast::title(__('Email Account(s) Enabled'))->autoDismiss(2)
+                after: fn() => Toast::title(__('Email Account(s) Enabled'))->autoDismiss(2)
             )
             ->bulkAction(
                 label: __('Disable'),
                 each: fn(EmailAccount $account) => (new EmailAccountController())->setNoActive($account),
-                after: fn() =>  Toast::title(__('Email Account(s) Disabled'))->autoDismiss(2)
+                after: fn() => Toast::title(__('Email Account(s) Disabled'))->autoDismiss(2)
             )
             ->bulkAction(
                 label: __('Enable Auto Reply'),
                 each: fn(EmailAccount $account) => (new EmailAccountController())->enableAutoReply($account),
-                after: fn() =>  Toast::title(__('Email Account(s) Auto Reply Enabled'))->autoDismiss(2)
+                after: fn() => Toast::title(__('Email Account(s) Auto Reply Enabled'))->autoDismiss(2)
             )
             ->bulkAction(
                 label: __('Disable Auto Reply'),
                 each: fn(EmailAccount $account) => (new EmailAccountController())->disableAutoReply($account),
-                after: fn() =>  Toast::title(__('Email Account(s) Auto Reply Disabled'))->autoDismiss(2)
+                after: fn() => Toast::title(__('Email Account(s) Auto Reply Disabled'))->autoDismiss(2)
             )
             ->bulkAction(
                 label: __('Delete'),
                 each: fn(EmailAccount $account) => $account->delete(),
                 confirm: __('Delete Account(s)'),
-                confirmText:  __('Are you sure?'),
+                confirmText: __('Are you sure?'),
                 confirmButton: __('Yes'),
                 cancelButton: __('Cancel'),
-                after: fn() =>  Toast::title(__('Account(s) Deleted Successfully'))->autoDismiss(2)
+                after: fn() => Toast::title(__('Account(s) Deleted Successfully'))->autoDismiss(2)
             )
             ->paginate(10);
 

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+use App\Jobs\CheckCredentials;
 use App\Models\EmailAccount;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
@@ -14,10 +15,11 @@ use Webklex\PHPIMAP\ClientManager;
 
 class EmailAccountService
 {
-    public function checkSmtpConnection($id){
+    public function checkSmtpConnection($id)
+    {
 
         $result = [];
-        $result['type'] ='error';
+        $result['type'] = 'error';
 
         $smtpAccount = EmailAccount::findOrFail($id);
 
@@ -35,8 +37,8 @@ class EmailAccountService
             $transport->setUsername($smtpAccount->smtp_username);
             $transport->setPassword($smtpAccount->smtp_password);
             $transport->start();
-            $result['message'] ='SMTP is connected';
-            $result['type'] ='success';
+            $result['message'] = 'SMTP is connected';
+            $result['type'] = 'success';
             $result['validAccount'] = true;
 
             $smtpAccount->smtp_validation = true;
@@ -46,7 +48,7 @@ class EmailAccountService
 
         } catch (\Exception $e) {
 
-            $result['message'] =$e->getMessage();
+            $result['message'] = $e->getMessage();
             exit(json_encode($result));
 
         }
@@ -57,7 +59,7 @@ class EmailAccountService
     {
 
         $result = [];
-        $result['type'] ='error';
+        $result['type'] = 'error';
 
         $cm = new ClientManager($options = []);
         $imapAccount = EmailAccount::findOrFail($id);
@@ -73,36 +75,32 @@ class EmailAccountService
             'password' => $imapAccount->imap_password,
         ]);
 
-        try
-        {
+        try {
             $client->connect();
 
-            if($client->isConnected())
-            {
-                $result['message'] ='IMAP is connected';
-                $result['type'] ='success';
+            if ($client->isConnected()) {
+                $result['message'] = 'IMAP is connected';
+                $result['type'] = 'success';
                 $result['validAccount'] = true;
 
                 $imapAccount->imap_validation = true;
                 $imapAccount->save();
 
             } else {
-                $result['message'] ='IMAP is not connected';
+                $result['message'] = 'IMAP is not connected';
             }
 
             exit(json_encode($result));
 
-        }
-        catch (\Exception $e)
-        {
-            $result['message'] =$e->getMessage();
+        } catch (\Exception $e) {
+            $result['message'] = $e->getMessage();
             exit(json_encode($result));
 
         }
 
     }
 
-    public function  setEmailAccount($id)
+    public function setEmailAccount($id)
     {
         $emailAddress = EmailAccount::findOrFail($id)->email_address;
 
@@ -114,7 +112,8 @@ class EmailAccountService
 
         return to_route('dashboard');
     }
-    public function  unsetEmailAccount()
+
+    public function unsetEmailAccount()
     {
 
         session()->remove('chosen_email_account');
@@ -123,6 +122,11 @@ class EmailAccountService
         Toast::info(__('Please Choose Account'))->autoDismiss(2);
 
         return to_route('dashboard');
+    }
+
+    public function checkCredentials($emailAccount)
+    {
+        CheckCredentials::dispatch($emailAccount);
     }
 
 }

@@ -6,13 +6,9 @@ use App\Enums\Encryption;
 use App\Http\Requests\EmailAccountRequest;
 use App\Models\EmailAccount;
 use App\Models\EmailTemplate;
-use App\Models\IncomingEmail;
 use App\Tables\EmailAccounts;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use ProtoneMedia\Splade\Facades\Toast;
-use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
-use Webklex\PHPIMAP\ClientManager;
 
 class EmailAccountController extends Controller
 {
