@@ -153,6 +153,7 @@ export default {
                         });
                     }
                    this.resetUploaded()
+                    this.$splade.visit("/"+this.importType);
                 });
 
         },

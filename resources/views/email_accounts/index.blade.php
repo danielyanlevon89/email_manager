@@ -5,7 +5,7 @@
                 {{ __('Email Accounts') }}
             </h2>
             <div>
-                <import :import-type='"email_account"' :import-title='"Import Accounts"'  />
+                <import :import-type='"email_accounts"' :import-title='"Import Accounts"'  />
                 <Link href="{{route('email_accounts.create')}}"
                       class="px-4 py-2 bg-indigo-400 hover:bg-indigo-600 text-white rounded-md">
                 {{ __('Add New Account') }}

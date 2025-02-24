@@ -8,7 +8,7 @@ use App\Models\Link;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class BlackListImport implements ToModel, WithHeadingRow
+class BlackListsImport implements ToModel, WithHeadingRow
 {
 
     public function model(array $row)

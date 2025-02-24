@@ -5,7 +5,7 @@
                 {{ __('Black List') }}
             </h2>
             <div>
-                <import :import-type='"black_list"' :import-title='"Import Black List"'  />
+                <import :import-type='"black_lists"' :import-title='"Import Black List"'  />
                 <Link href="{{route('black_lists.create')}}"
                       class="px-4 py-2 bg-indigo-400 hover:bg-indigo-600 text-white rounded-md">
                 {{ __('Add New Black List Item') }}

@@ -2,21 +2,19 @@
 
 namespace App\Imports;
 
-use App\Models\BlackList;
 use App\Models\EmailAccount;
-use App\Models\EmailTemplate;
 use App\Models\Link;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class TemplateImport implements ToModel, WithHeadingRow
+class LinksImport implements ToModel, WithHeadingRow
 {
 
     public function model(array $row)
     {
-        return new EmailTemplate([
-            'name' => $row['name'],
-            'text' => $row['text'],
+        return new Link([
+            'url' => $row['url'],
+            'is_active' => $row['is_active'],
         ]);
     }
 

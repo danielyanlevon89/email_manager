@@ -5,7 +5,7 @@
                 {{ __('Links') }}
             </h2>
             <div>
-                <import :import-type='"link"' :import-title='"Import Links"'  />
+                <import :import-type='"links"' :import-title='"Import Links"'  />
                 <Link href="{{route('links.create')}}"
                       class="px-4 py-2 bg-indigo-400 hover:bg-indigo-600 text-white rounded-md">
                 {{ __('Add New Link') }}

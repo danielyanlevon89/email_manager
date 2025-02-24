@@ -5,7 +5,7 @@
                 {{ __('Templates') }}
             </h2>
             <div>
-                <import :import-type='"template"' :import-title='"Import Templates"'  />
+                <import :import-type='"templates"' :import-title='"Import Templates"'  />
                 <Link href="{{route('templates.create')}}"
                       class="px-4 py-2 bg-indigo-400 hover:bg-indigo-600 text-white rounded-md">
                 {{ __('Add New Template') }}
